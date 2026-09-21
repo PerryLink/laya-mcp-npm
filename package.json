@@ -1,0 +1,48 @@
+{
+  "name": "laya-mcp",
+  "version": "0.1.1",
+  "description": "MCP server for Laya typed decisions (noul / choice / score): a warm model sidecar, token-budget preflight, and honest confidence. Node entry point for the Python package.",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "laya",
+    "decision-model",
+    "system-one",
+    "typed-decisions",
+    "calibration",
+    "claude-code",
+    "codex"
+  ],
+  "license": "Apache-2.0",
+  "author": "PerryLink",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "laya-mcp": "bin/laya-mcp.js"
+  },
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bin",
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/laya-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PerryLink/laya-mcp/issues"
+  },
+  "homepage": "https://github.com/PerryLink/laya-mcp#readme",
+  "scripts": {
+    "test": "node --test"
+  }
+}
