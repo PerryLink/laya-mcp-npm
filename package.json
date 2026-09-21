@@ -1,6 +1,6 @@
 {
   "name": "laya-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for Laya typed decisions (noul / choice / score): a warm model sidecar, token-budget preflight, and honest confidence. Node entry point for the Python package.",
   "keywords": [
     "mcp",
@@ -23,25 +23,24 @@
   "bin": {
     "laya-mcp": "bin/laya-mcp.js"
   },
-  "main": "./index.js",
   "exports": {
-    ".": "./index.js",
     "./package.json": "./package.json"
   },
   "files": [
     "bin",
-    "index.js",
+    "lib.js",
     "README.md",
     "LICENSE"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PerryLink/laya-mcp.git"
+    "url": "git+https://github.com/PerryLink/laya-mcp-npm.git",
+    "directory": "."
   },
   "bugs": {
-    "url": "https://github.com/PerryLink/laya-mcp/issues"
+    "url": "https://github.com/PerryLink/laya-mcp-npm/issues"
   },
-  "homepage": "https://github.com/PerryLink/laya-mcp#readme",
+  "homepage": "https://github.com/PerryLink/laya-mcp-npm#readme",
   "scripts": {
     "test": "node --test"
   }

@@ -4,7 +4,7 @@
  *
  * The implementation is Python: Laya is a PyTorch model and there is no way
  * around that. This file exists so the package can be installed and invoked the
- * way the Node half of the MCP ecosystem expects — `npx -y laya-mcp` — and it
+ * way the Node half of the MCP ecosystem expects - `npx -y laya-mcp` - and it
  * does exactly one thing: find a Python interpreter that has the real package,
  * hand over stdio, and stay out of the way.
  *
@@ -20,55 +20,23 @@
  * If the Python package is missing, the message names the exact command to fix
  * it and exits non-zero, because a launcher that prints a stack trace instead of
  * an instruction has moved the problem rather than solved it.
+ *
+ * The discovery logic lives in `../lib.js`: this file runs `main()` the moment it
+ * is imported, so anything defined here could only be tested by spawning Python.
  */
 
 import { spawn } from 'node:child_process';
-import { join } from 'node:path';
+
+import {
+  ENV_OVERRIDE,
+  LEGACY_ENV_OVERRIDE,
+  MIN_PYTHON,
+  candidateArgs,
+  candidateInterpreters,
+  explicitInterpreters,
+} from '../lib.js';
 
 const PACKAGE = 'laya-mcp';
-const MIN_PYTHON = [3, 10];
-
-/** The environment variable that overrides interpreter discovery outright. */
-const ENV_OVERRIDE = 'LAYACORE_PYTHON';
-
-/**
- * Interpreters to try, in order.
- *
- * The order is not cosmetic. On Windows, `python` frequently resolves to the
- * Microsoft Store execution alias at `%LOCALAPPDATA%\Microsoft\WindowsApps\
- * python.exe`, which is a stub: it prints nothing useful and cannot import
- * anything. It sits *ahead* of a real interpreter on PATH, so a naive "try
- * python, then python3" resolves to the stub, fails the import, and concludes
- * that the package is not installed - while the user is looking at a working
- * `pip show laya-mcp`. `py` is the Windows launcher and is a better first guess
- * there; it reports a real interpreter or fails loudly.
- */
-const CANDIDATES = process.platform === 'win32'
-  ? ['py', 'python', 'python3']
-  : ['python3', 'python'];
-
-/**
- * Interpreters a user has explicitly pointed us at, ahead of any guess.
- *
- * `LAYACORE_PYTHON` is the escape hatch and wins outright. `VIRTUAL_ENV` is the
- * standard variable an activated virtualenv exports, and honouring it means the
- * common case - a user who activated the environment they installed into -
- * works without configuration, which PATH alone cannot deliver because the
- * activation is not visible to a process spawned by a harness.
- */
-function explicitInterpreters() {
-  const found = [];
-  const override = process.env[ENV_OVERRIDE] || process.env.LAYA_MCP_PYTHON;
-  if (override) found.push({ interpreter: override, args: [] });
-  if (process.env.VIRTUAL_ENV) {
-    found.push({
-      interpreter: join(process.env.VIRTUAL_ENV, process.platform === 'win32' ? 'Scripts' : 'bin',
-        process.platform === 'win32' ? 'python.exe' : 'python'),
-      args: [],
-    });
-  }
-  return found;
-}
 
 function fail(message) {
   process.stderr.write(`laya-mcp: ${message}\n`);
@@ -88,9 +56,8 @@ function probe(interpreter, args = []) {
       stdio: ['ignore', 'pipe', 'pipe'],
     });
     let out = '';
-    let err = '';
     child.stdout.on('data', (chunk) => { out += chunk; });
-    child.stderr.on('data', (chunk) => { err += chunk; });
+    child.stderr.on('data', () => { /* a failing interpreter is the answer */ });
     child.on('error', () => resolve(null));
     child.on('close', (code) => {
       resolve(code === 0 ? { interpreter, args, version: out.trim() } : null);
@@ -107,11 +74,9 @@ async function findPython() {
     const found = await probe(candidate.interpreter, candidate.args);
     if (found) return found;
   }
-  for (const candidate of CANDIDATES) {
-    // `py -3` is the Windows launcher; without it `py` may pick a stale Python 2.
-    const extra = candidate === 'py' ? ['-3'] : [];
+  for (const candidate of candidateInterpreters()) {
     tried.push(candidate);
-    const found = await probe(candidate, extra);
+    const found = await probe(candidate, candidateArgs(candidate));
     if (found) return found;
   }
   return { tried };
@@ -134,6 +99,8 @@ async function main() {
       `  Already installed it? Point this launcher at the interpreter directly:\n` +
       `      set ${ENV_OVERRIDE}=C:\\path\\to\\python.exe     (Windows)\n` +
       `      export ${ENV_OVERRIDE}=/path/to/python        (macOS, Linux)\n` +
+      `  (${LEGACY_ENV_OVERRIDE} is still read, for anyone who set it back when\n` +
+      `  earlier versions named that one here.)\n` +
       `  Activating the virtualenv you installed into also works.\n` +
       `  Note that Laya is a PyTorch model, so the first install downloads torch ` +
       `(~2 GB) and the first run downloads a checkpoint (~650 MB).`,

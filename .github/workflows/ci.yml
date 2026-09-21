@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: test (node ${{ matrix.node }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # No install step: `lib.js` imports only `node:child_process` and `node:fs`.
+      #
+      # What this covers is discovery - which interpreter is tried, in what
+      # order, and where an explicit pointer or an activated virtualenv jumps the
+      # queue. That is where this launcher has been wrong before: on Windows
+      # `python` is often the Microsoft Store stub, which cannot import anything
+      # and sits ahead of the real interpreter, so a launcher that guesses wrong
+      # tells a user their package is not installed while `pip show` disagrees.
+      #
+      # What it cannot cover: actually spawning an interpreter with `laya-mcp`
+      # installed. That needs torch and a checkpoint, and belongs to the Python
+      # package's own suite.
+      - run: npm test

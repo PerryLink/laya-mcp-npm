@@ -29,15 +29,19 @@ missing. Point it at the right interpreter either way:
 
 ```bash
 # name it outright
-set LAYACORE_PYTHON=C:\path\to\python.exe        # Windows
-export LAYACORE_PYTHON=/path/to/python           # macOS, Linux
+set LAYA_MCP_PYTHON=C:\path\to\python.exe        # Windows
+export LAYA_MCP_PYTHON=/path/to/python           # macOS, Linux
 
 # or just activate the virtualenv you installed into — VIRTUAL_ENV is honoured
 ```
 
-> **Status: 0.1.0, work in progress.** The Python core is implemented and its pure
-> logic is covered by 64 checks; the end-to-end path through live agent harnesses
-> is not yet covered in CI. Interfaces may move before 1.0.
+> `LAYACORE_PYTHON` is still read. 0.1.0 and 0.1.1 printed that name in the error
+> message, and a launcher that stopped honouring the variable its own previous
+> version told you to set would be worse than one carrying the alias.
+
+> **Status: 0.1.1, work in progress.** The Python core is implemented and covered
+> by CI; the end-to-end path through live agent harnesses is not yet covered.
+> Interfaces may move before 1.0.
 
 ---
 
