@@ -3,9 +3,13 @@
 MCP server for [Laya](https://github.com/NandhaKishorM/laya) typed decisions —
 `noul` (yes/no), `choice`, `score` — wrapped so it survives contact with a server.
 
+[English](README.md) · [简体中文](README-zh.md) · [Español](README-es.md) · [Português](README-pt.md) · [हिन्दी](README-hi.md)
+
 ```bash
 npx -y laya-mcp --help
 ```
+
+Registered as [`io.github.PerryLink/laya-mcp`](https://registry.modelcontextprotocol.io/v0.1/servers?search=perrylink) in the official MCP Registry.
 
 > **This npm package is a launcher, not an implementation.** Laya is a PyTorch
 > model, so the server itself is Python. Installing this package gets you the
@@ -39,9 +43,9 @@ export LAYA_MCP_PYTHON=/path/to/python           # macOS, Linux
 > message, and a launcher that stopped honouring the variable its own previous
 > version told you to set would be worse than one carrying the alias.
 
-> **Status: 0.1.1, work in progress.** The Python core is implemented and covered
-> by CI; the end-to-end path through live agent harnesses is not yet covered.
-> Interfaces may move before 1.0.
+> **Status: 0.1.3, work in progress.** The Python core is implemented and covered
+> by CI. The launcher itself is covered by ten checks over interpreter discovery,
+> which is where it has been wrong before. Interfaces may move before 1.0.
 
 ---
 
