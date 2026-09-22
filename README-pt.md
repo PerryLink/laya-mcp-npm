@@ -32,7 +32,7 @@ export LAYA_MCP_PYTHON=/path/to/python           # macOS, Linux
 
 > O `LAYACORE_PYTHON` continua a ser lido. As versões 0.1.0 e 0.1.1 imprimiam esse nome na mensagem de erro, e um lançador que deixasse de honrar a variável que a sua própria versão anterior te disse para definir seria pior do que um que carrega o alias.
 
-> **Estado: 0.1.3, em desenvolvimento.** O núcleo em Python está implementado e coberto por CI. O lançador está coberto por dez verificações sobre a descoberta de interpretadores, que é onde já se enganou antes. As interfaces podem mudar antes de 1.0.
+> **Estado: 0.1.4, em desenvolvimento.** O núcleo em Python está implementado e coberto por CI. O lançador está coberto por dez verificações sobre a descoberta de interpretadores, que é onde já se enganou antes. As interfaces podem mudar antes de 1.0.
 
 ---
 

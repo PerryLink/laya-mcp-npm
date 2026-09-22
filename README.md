@@ -43,7 +43,7 @@ export LAYA_MCP_PYTHON=/path/to/python           # macOS, Linux
 > message, and a launcher that stopped honouring the variable its own previous
 > version told you to set would be worse than one carrying the alias.
 
-> **Status: 0.1.3, work in progress.** The Python core is implemented and covered
+> **Status: 0.1.4, work in progress.** The Python core is implemented and covered
 > by CI. The launcher itself is covered by ten checks over interpreter discovery,
 > which is where it has been wrong before. Interfaces may move before 1.0.
 
