@@ -1,6 +1,6 @@
 {
   "name": "laya-mcp",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "mcpName": "io.github.PerryLink/laya-mcp",
   "description": "MCP server for Laya typed decisions (noul / choice / score): a warm model sidecar, token-budget preflight, and honest confidence. Node entry point for the Python package.",
   "keywords": [
