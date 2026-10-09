@@ -1,0 +1,28 @@
+# Build context for the Glama introspection image (`Dockerfile`).
+#
+# The Python half of this image is installed from PyPI, not from this directory,
+# so the context only has to carry the launcher itself: `bin/laya-mcp.js`,
+# `lib.js` and `package.json`. Everything listed here is weight the image never
+# looks at.
+
+# Version control and CI
+.git
+.github
+
+# Nothing is installed from npm (no runtime dependencies), so a checked-out or
+# freshly installed tree is never part of the image.
+node_modules/
+npm-debug.log*
+
+# Python bytecode caches, in case anything here was ever imported
+__pycache__/
+*.py[cod]
+
+# The launcher's own tests; the image runs the launcher, not its suite.
+test/
+
+# Documentation. Unlike a Python source install there is no metadata here that
+# reads a README, so this cannot break the build.
+*.md
+
+.DS_Store
